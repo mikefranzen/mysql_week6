@@ -6,13 +6,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-
-
+import application.Application;
 
 public class ReservationDao {
 
-String firstName = "";
-String lastName = "";
 int userId;
 
 public void signIn() {
@@ -23,27 +20,27 @@ public void signIn() {
 		String sql = "insert into users (first_name, last_name) values (? , ?);";
 		try{
 			PreparedStatement statement = connection.prepareStatement(sql1);
-			statement.setString(1, firstName.toLowerCase());
-			statement.setString(2, lastName.toLowerCase());
+			statement.setString(1, Application.firstName.toLowerCase());
+			statement.setString(2, Application.lastName.toLowerCase());
 			ResultSet rs = statement.executeQuery();
 			userId = rs.getInt("user_id");
 			
 			if (userId < 1) {
 				statement = connection.prepareStatement(sql);
-				statement.setString(1, firstName.toLowerCase());
-				statement.setString(2, lastName.toLowerCase());
+				statement.setString(1, Application.firstName.toLowerCase());
+				statement.setString(2, Application.lastName.toLowerCase());
 				statement.executeUpdate();
 				
 				statement = connection.prepareStatement(sql1);
-				statement.setString(1, firstName.toLowerCase());
-				statement.setString(2, lastName.toLowerCase());
+				statement.setString(1, Application.firstName.toLowerCase());
+				statement.setString(2, Application.lastName.toLowerCase());
 				rs = statement.executeQuery();
 				userId = rs.getInt("user_id");
 			} 
-		} catch (Exception e){
+		} catch (SQLException e){
 			
 		}
-	} catch (Exception e){
+	} catch (SQLException e){
 		
 	}
 }
@@ -68,12 +65,11 @@ public void signIn() {
 						}
 					
 				}
-			} catch(Exception e) {
-					throw new RuntimeException(e); 									
+			} catch(SQLException e) {
+					System.out.println("No reservations"); 									
 			}												
 						
 	}
-	
 
 	public void listAvailableRooms() {
 		
@@ -127,7 +123,7 @@ public void deleteReservation(int reservationId){
 		PreparedStatement statement = connection.prepareStatement(sql1);
 					statement.setInt(1, reservationId);
 		statement.executeUpdate();
-		} catch(Exception e) {
+		} catch(SQLException e) {
 				throw new RuntimeException(e); 									
 		}												
 	}				
