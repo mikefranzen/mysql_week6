@@ -3,7 +3,14 @@ package application;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
-import java.sql.Date;
+import java.util.Date;
+//import java.sql.Date;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+
+
+
 
 
 public class Menu {
@@ -16,7 +23,8 @@ public class Menu {
 			"Cancel Reservation",
 			"Exit");
 	
-	public void start() {
+	public void start() throws ParseException {
+		try {
 		String selection = "";
 		
 		do {
@@ -26,18 +34,27 @@ public class Menu {
 			if (selection.equals("1")) {
 				Application.reservationSQL.listReservations();
 			} else if (selection.equals("2")) {
-				System.out.println("Available rooms\n-----------------------");
-				Application.reservationSQL.listAvailableRooms();
+				
+				System.out.println("Date (YYYY-MM-DD): ");
+				Scanner scanner1 = new Scanner(System.in);
+				String strDate = scanner1.nextLine();
+				
+					SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
+			
+				java.util.Date date;
+				
+				date = sdf1.parse(strDate);
+				java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+				
+				System.out.println("Available rooms at requested time\n-----------------------");
+				Application.reservationSQL.listAvailableRooms(sqlDate);
 				System.out.print("Select room #: ");
 				int roomId = scanner.nextInt();
-				System.out.print("Date (YYYY-MM-DD): ");
-				String strDate = scanner.nextLine();
-				try {
-					Date date = Date.valueOf(strDate);
-					Application.reservationSQL.createReservations(roomId, date);;
-				} catch (Exception e){
-					System.out.println("Invalid, please try again");
-				}
+				
+				
+				Application.reservationSQL.createReservations(roomId, sqlDate);
+				
+				
 				
 			} else if (selection.equals("3")) {
 				Application.reservationSQL.listReservations();
@@ -48,8 +65,12 @@ public class Menu {
 				Application.signIn();
 				break;
 			}
+			scanner.nextLine();
 		} while (!selection.equals("-1"));
-	}
+		} catch (ParseException ex) {
+			throw ex;
+		}
+	} 
 
 	private void printMenu() {
 		System.out.println("Select an Option:\n-----------------------");
@@ -57,4 +78,6 @@ public class Menu {
 			System.out.println((i + 1 + " ") + options.get(i));
 		}
 	}
+	
 }
+
