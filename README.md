@@ -4,6 +4,8 @@ By Mike Franzen, Luis Gonzalez, Paul Willis
 
 We used the emplyees database from https://github.com/datacharmer/test_db for testing, just adding our sql tables to it, but this can be replaced in reservationSRC/DBconnection.java
 
+The SQL to create the tables is found in mysql-week6.sql
+
 Please remember to update your database access credentials in reservationSRC/DBconnection before testing.
 
 # Room Reservation Manager
