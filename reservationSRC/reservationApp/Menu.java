@@ -1,5 +1,6 @@
 package reservationApp;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
@@ -52,12 +53,12 @@ public class Menu {
 
 					// both prints a list of available rooms with the ReservationDAO,
 					// and returns the ID's of available rooms
-					List<Integer> available = Reservations.dataAccess.listAvailableRooms(sqlDate);
+					List<Integer> available = new ArrayList<>();
+					available.addAll(Reservations.dataAccess.listAvailableRooms(sqlDate));
+					//available.addAll(Reservations.dataAccess.listAvailableRooms(sqlDate));
 
 					// if there are no available rooms, don't prompt for selection
-					if (available.isEmpty()) {
-						System.out.println("0 available rooms for this date");
-					} else {
+					if (!available.isEmpty()) {
 						// prompts user to select room to reserve
 						// validates that the user selection is in the list of available rooms
 						int roomId;
@@ -76,6 +77,8 @@ public class Menu {
 							// date
 							Reservations.dataAccess.createReservations(roomId, sqlDate);
 						}
+					} else {
+						System.out.println("0 available rooms for this date");
 					}
 				} else if (selection.equals("3")) { // 3 Cancel Reservation
 					// starts by showing the user's reservations
