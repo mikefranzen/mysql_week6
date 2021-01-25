@@ -81,6 +81,9 @@ public class ReservationDAO {
 		} catch (SQLException e) {
 			System.out.println("No reservations");
 		}
+		if (reservationIds.isEmpty()) {
+			System.out.println("No reservations");
+		}
 		//return the list of reservation ID's
 		return reservationIds;
 	}
@@ -88,7 +91,7 @@ public class ReservationDAO {
 	//show all rooms available for a user to reserve at a given time
 	public List<Integer> listAvailableRooms(java.sql.Date date) {
 		List<Integer> roomIds = new ArrayList<>();
-
+		
 		try {
 			//establishes the MySQL db connection
 			Connection connection = DBconnection.getConnection();
